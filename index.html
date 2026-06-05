@@ -138,7 +138,7 @@
             box-shadow: 0 0 5px rgba(0, 59, 113, 0.2);
         }
 
-        /* Submit Button & Spinner Styling */
+        /* Submit Button */
         button {
             width: 100%;
             padding: 14px;
@@ -151,45 +151,9 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50px;
         }
         button:hover {
             background-color: #00264d;
-        }
-        button:disabled {
-            background-color: #66829e;
-            cursor: not-allowed;
-        }
-
-        /* CSS for the spinning circle */
-        .spinner {
-            display: none;
-            width: 22px;
-            height: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #ffffff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Success Message Styling */
-        #success_message {
-            display: none;
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid #c8e6c9;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -203,8 +167,7 @@
 
         <h2>Open a Business Savings Account</h2>
         
-        <!-- Added ID to the form for JavaScript to target it easily -->
-        <form id="registration_form" action="https://hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs" method="POST">
+        <form action="https://hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs" method="POST">
             
             <!-- Eligibility Criteria Section -->
             <div class="criteria-box">
@@ -244,22 +207,14 @@
                     <input type="email" id="customer_email" name="customer_email" required>
                 </div>
 
-                <!-- Updated Button with Spinner Elements -->
-                <button type="submit" id="submit_button">
-                    <span id="button_text">Proceed to Registration</span>
-                    <div id="loading_spinner" class="spinner"></div>
-                </button>
-                
-                <!-- Success Message Container -->
-                <div id="success_message">Registration submitted successfully!</div>
+                <button type="submit">Proceed to Registration</button>
             </div>
 
         </form>
     </div>
 
-    <!-- JavaScript to handle the toggle and background submission -->
+    <!-- JavaScript to handle the toggle -->
     <script>
-        // 1. Toggle visibility based on radio button
         document.getElementById('confirm_eligibility').addEventListener('change', function() {
             var fieldsContainer = document.getElementById('registration_fields');
             var radioLabel = document.getElementById('radio_label');
@@ -272,47 +227,6 @@
                     fieldsContainer.style.opacity = '1';
                 }, 10);
             }
-        });
-
-        // 2. Handle form submission in the background with the spinner
-        const form = document.getElementById('registration_form');
-        const submitBtn = document.getElementById('submit_button');
-        const btnText = document.getElementById('button_text');
-        const spinner = document.getElementById('loading_spinner');
-        const successMessage = document.getElementById('success_message');
-
-        form.addEventListener('submit', function(e) {
-            // Prevent the browser from leaving the page
-            e.preventDefault(); 
-
-            // Turn on the loading state
-            submitBtn.disabled = true;
-            btnText.style.display = 'none';
-            spinner.style.display = 'block';
-
-            // Gather the data from the inputs
-            const formData = new FormData(form);
-
-            // Send the data to your Make webhook in the background
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                // When Make responds successfully
-                submitBtn.style.display = 'none'; // Hide the button entirely
-                successMessage.style.display = 'block'; // Show success message
-            })
-            .catch(error => {
-                // If there is an internet or server error
-                console.error('Error submitting form:', error);
-                alert('There was a problem submitting your request. Please try again.');
-                
-                // Revert the button back to normal
-                submitBtn.disabled = false;
-                btnText.style.display = 'block';
-                spinner.style.display = 'none';
-            });
         });
     </script>
 
